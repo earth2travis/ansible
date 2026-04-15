@@ -5,10 +5,10 @@ tags:
   - knowledge-management
   - systems-thinking
 related:
-  - [[2026-04-08-bergson-duration-creative-evolution]]
-  - [[2026-04-08-contemporary-process-philosophy]]
-  - [[2026-04-08-llm-wiki-master-guide]]
-  - [[2026-04-08-nagarjuna-mulamadhyamakakarika-sunyata]]
+  - [[1password-integration]]
+  - [[2026-02-14-foundations]]
+  - [[2026-02-19-nex-brainstorm]]
+  - [[2026-02-20-composable-primitives]]
 source: research/raw/hermes-agent-report.md
 ---
 

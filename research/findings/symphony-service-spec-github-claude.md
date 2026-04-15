@@ -10,7 +10,7 @@ related:
   - [[2026-02-14-foundations]]
   - [[2026-02-19-nex-brainstorm]]
   - [[2026-02-20-composable-primitives]]
-source: research/raw/SPEC-github-claude.md
+source: research/raw/symphony-service-spec-github-claude.md
 ---
 
 # Symphony Service Specification (GitHub + Claude Code Variant)
