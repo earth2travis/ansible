@@ -4,10 +4,10 @@ tags:
   - philosophy
   - research
 related:
+  - [[2026-02-10-ai-career-convergence]]
   - [[2026-04-11-baudrillard-simulacra-and-simulation]]
   - [[actual-occasions]]
   - [[alfred-north-whitehead]]
-  - [[becoming]]
 source: research/raw/intuition-vs-intellect.md
 ---
 

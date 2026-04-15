@@ -10,7 +10,7 @@ related:
   - [[2026-02-14-foundations]]
   - [[2026-02-19-nex-brainstorm]]
   - [[2026-02-20-composable-primitives]]
-source: research/raw/SPEC.md
+source: research/raw/loom-service-spec.md
 ---
 
 # Loom Service Specification

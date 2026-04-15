@@ -8,6 +8,7 @@ tags:
   - popper
 related:
   - [[karl-popper]]
+  - [[research]]
 source: research/raw/2026-04-11-popper-logic-of-scientific-discovery.md
 ---
 

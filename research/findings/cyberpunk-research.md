@@ -7,7 +7,7 @@ related:
   - [[2026-02-14-foundations]]
   - [[2026-02-19-nex-brainstorm]]
   - [[2026-02-20-composable-primitives]]
-source: research/raw/README.md
+source: research/raw/cyberpunk-research.md
 ---
 
 # Cyberpunk Research
