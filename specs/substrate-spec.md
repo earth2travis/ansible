@@ -61,7 +61,7 @@ substrate/
 │   └── _retro.sh             # Weekly retrospective generator
 ├── specs/
     ├── substrate-spec.md           # This document (Constitution — the "What")
-    ├── factory-architecture-cloudflare.md  # Factory Architecture (Blueprint — the "How")
+    ├── cloudflare-spec.md                  # Cloud Architecture (Blueprint — the "How")
     ├── ingest-spec.md              # _ingest.py behavior and pipeline
     ├── lint-spec.md                # _lint.py rules and auto-fix
     ├── query-spec.md               # _query.py format and categories
@@ -295,7 +295,7 @@ Each system script has its own spec defining inputs, outputs, behavior, and inte
 
 The Factory Architecture Spec defines the cloud infrastructure that runs the Substrate:
 
-- **[factory-architecture-cloudflare.md](factory-architecture-cloudflare.md)** — Cloudflare-first stack: Artifacts (memory), Workers + AI Gateway (engine), Email (transport), GitHub (interface)
+- **[cloudflare-spec.md](cloudflare-spec.md)** — Cloudflare-first stack: Artifacts (memory), Workers + AI Gateway (engine), Email (transport), GitHub (interface)
 
 When building scripts or planning infrastructure, reference the Factory Architecture spec. When organizing knowledge or defining content standards, reference the Substrate spec.
 
