@@ -87,6 +87,10 @@ python3 scripts/_query.py --category state              # Run all queries in cat
 python3 scripts/_query.py --run "query.md" --format json # Machine-readable answer
 ```
 
+## Entity Expansion
+
+When `_query.py` processes a query, it loads `insights/entities/entity-map.json` and expands any known aliases in the query text. Searching for "Travis" automatically searches for all mapped aliases (`earth2travis`, `@travis`, `Ξ2T`, `travis@synthweave.xyz`). This ensures complete answers across all sources, not just the ones using the exact alias from the question.
+
 ## Integration
 
 Queries are invoked on-demand by agents during research, decision-making, or session execution. They are not scheduled -- they run when knowledge is needed.

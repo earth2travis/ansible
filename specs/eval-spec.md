@@ -69,13 +69,14 @@ Categories:
 A Python script located in `scripts/_eval.py`. Execution steps:
 
 1. **Load:** Find all eval questions (`eval: true`) in `research/queries/`.
-2. **Query:** For each question, construct a prompt that forces the engine to answer using only Substrate files.
-3. **Synthesize:** Generate an answer via the Substrate's knowledge retrieval.
+2. **Expand:** Load `insights/entities/entity-map.json` and expand entity aliases in the eval questions.
+3. **Query:** For each question, construct a prompt that forces the engine to answer using only Substrate files, expanded across all known aliases.
+4. **Synthesize:** Generate an answer via the Substrate's knowledge retrieval.
    - Phase 1 (local): Read files directly from the repo. Use a local LLM call.
    - Phase 2 (cloud): Integrate with the AI Gateway + Workers ("the Brain") for consistent model usage and context window management.
-4. **Cite:** Force the engine to list every source file used in its answer.
-5. **Compare:** Score the generated answer against the human-written ground truth.
-6. **Report:** Write the full eval report to `evals/YYYY-MM-DD-eval.md`.
+5. **Cite:** Force the engine to list every source file used in its answer.
+6. **Compare:** Score the generated answer against the human-written ground truth.
+7. **Report:** Write the full eval report to `evals/YYYY-MM-DD-eval.md`.
 
 ### C. The Output: Evaluation Reports
 

@@ -29,6 +29,7 @@ The existing `scripts/_ingest.py` already implements:
 **Must have:**
 
 - Proper handling of `research/queries/`, `decisions/`, `guides/`, `retros/`, `specs/` as separate directories — not touched by ingest
+- Entity resolution: load `insights/entities/entity-map.json`, match known aliases in raw file bodies and tags, and inject `canonical_entity` metadata into findings so that all mentions of "travis", "earth2travis", "@travis", "Ξ2T", etc. resolve to the same entity
 - Explicit logging to a structured log file (currently logs to stdout only)
 - Idempotency: running ingest twice produces the same output without duplicates
 - Respect `no-ingest` YAML frontmatter flag (skip files marked for manual handling)
@@ -44,6 +45,10 @@ The existing `scripts/_ingest.py` already implements:
 
 - Content deduplication detection: flag near-duplicate raw files
 - Source freshness scoring: prefer newer sources when conflicts exist
+
+## Entity Resolution
+
+The ingest pipeline loads `insights/entities/entity-map.json` (if it exists) and resolves known entity aliases during processing. Each finding that mentions a known alias gets metadata recording the canonical entity it resolved to. This enables queries and evals to search across all aliases simultaneously.
 
 ## Output Format
 

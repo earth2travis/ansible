@@ -24,9 +24,19 @@ Every decision, research finding, and architectural choice is tracked in git. No
 - **Measure comprehension.** A knowledge system is useless if agents can't extract correct answers from it. Query evaluation proves the system works.
 - **Continuous improvement.** Weekly retrospectives analyze the Substrate's own health. Gaps drive the next iteration.
 
-### 1.2 The Karpathy Pattern
+### 1.2 Entity Resolution
 
-The Substrate follows the LLM Wiki pattern: raw sources flow through a pipeline into structured knowledge. But whereas the LLM Wiki is a public knowledge base about AI broadly, the Substrate is the Agent Factory's **private nervous system** — about who we are, what we're building, and what we've learned.
+A single entity may appear under many aliases across sources: a person might appear as their email, Slack handle, GitHub username, full name, initials, or internal codename. A retrieval system sees these as unrelated text strings. An understanding system **maps them to the same entity**.
+
+Entity resolution is a core standard of the Substrate:
+
+- **The Entity Map** — `insights/entities/entity-map.json` links all known aliases to canonical entities.
+- **The Pipeline Rule** — `_ingest.py` uses the entity map to unify aliases in finding metadata.
+- **The Query Expansion** — `_query.py` and `_eval.py` expand searches across all known aliases.
+
+Without entity resolution, a question like "What did Travis say about the Cloudflare migration?" would only match one alias and miss everything else. Entity resolution is the difference between finding a file and knowing a person.
+
+### 1.3 The Karpathy Pattern
 
 ---
 
@@ -79,7 +89,7 @@ Each directory has a single responsibility. Scripts only write to their designat
 | `research/findings/` | `_ingest.py` | `_ingest.py`, `_lint.py` | Fully regenerated on each ingest run |
 | `research/queries/` | Humans, agents | `_query.py` | Append/edit manually |
 | `insights/concepts/` | `_ingest.py` (auto), agents (manual) | Humans, agents | Stable once promoted; not overwritten by ingest |
-| `insights/entities/` | `_ingest.py` (auto), agents (manual) | Humans, agents | Stable once promoted |
+| `insights/entities/` | `_ingest.py` (auto), agents (manual), `Entity Map` | Humans, agents | Stable once promoted; entity map is manually curated |
 | `insights/comparisons/` | Agents (manual) | Humans, agents | Append/edit manually |
 | `decisions/` | Humans, agents | Humans, agents | Append-only; deprecated entries marked, not deleted |
 | `guides/` | Humans, agents | Humans, agents | Append/edit manually |
