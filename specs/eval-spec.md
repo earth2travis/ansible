@@ -85,11 +85,11 @@ Reports are stored in `evals/YYYY-MM-DD-eval.md` (no subdirectory). Each report 
 - **Synthesis Accuracy Score (SAS):** 0-100% aggregate score
 - **Per-question breakdown:** Score, pass/fail, citations used vs. expected
 - **Provenance Check:** Did the engine cite the correct source of truth?
-- **Gap Analysis:** Specific areas where the Substrate failed to provide context
+- **Gap Analysis:** Actionable items for the Substrate (e.g., "Missing source for X," "Entity map needs update for Y," "Stale content in Z").
 
 ## The Metric: Synthesis Accuracy Score (SAS)
 
-The SAS is calculated based on four pillars:
+The SAS is calculated based on four pillars. Scoring is performed by an **LLM-as-a-judge** using the Ground Truth as the primary rubric.
 
 | Pillar | Weight | Tests |
 |---|---|---|
@@ -97,6 +97,9 @@ The SAS is calculated based on four pillars:
 | **Conflict Resolution** | 30% | When sources disagree, did it pick the authoritative one? |
 | **Entity Unification** | 20% | Did it recognize equivalent entities? (e.g., "Ansible" = "Substrate") |
 | **Provenance** | 10% | Did it cite the correct source files? |
+
+### Staleness Check
+For **State** category questions, the engine must also evaluate the `last_confirmed` field. Answers derived from sources older than 30 days without re-confirmation are flagged as **Potentially Stale**, which impacts the Factual Correctness score.
 
 ## Implementation Plan
 
