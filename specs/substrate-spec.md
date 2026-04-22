@@ -2,7 +2,7 @@
 title: "The Substrate Spec"
 date: 2026-04-22
 status: "review"
-version: "2.0"
+version: "2.0-rc"
 ---
 
 # The Substrate Spec
@@ -56,34 +56,34 @@ The primary value of the Substrate is not the technology that hosts it, but the 
 
 ```
 substrate/
-├── INDEX.md                    # Entry point, navigation
-├── SCHEMA.md                   # Frontmatter requirements and naming conventions
-├── CONTRIBUTING.md             # Workflow rules for agents and humans
-├── decisions/                  # Architecture Decision Records
-├── guides/                     # How-to procedures
-├── evals/                      # Query/eval script output
-├── retros/                     # Weekly retrospective output
-├── insights/                   # Compiled, cross-referenced knowledge
-│   ├── comparisons/            # Head-to-head analysis
-│   ├── concepts/               # Unified concepts and frameworks
-│   └── entities/               # People, orgs, systems
-├── skills/                     # Protocol-Registered Resources (PRRs)
-│   ├── registry.json           # Skill registry: IDs, versions, ownership
-│   └── <skill-name>/           # Individual skills with contract.md
+├── INDEX.md                        # Entry point, navigation for the repo
+├── SCHEMA.md                       # Frontmatter requirements, naming conventions
+├── CONTRIBUTING.md                 # Agent/human workflow rules
+├── decisions/                      # Architecture Decision Records (ADRs)
+├── guides/                         # How-to procedures and workflows
+├── evals/                          # Output from query/eval scripts
+├── retros/                         # Output from weekly retro script
+├── insights/                       # Compiled, cross-referenced knowledge
+│   ├── comparisons/                # Head-to-head analysis docs
+│   ├── concepts/                   # Stable unified concepts and frameworks
+│   └── entities/                   # People, orgs, systems
+├── skills/                         # Protocol-Registered Resources (PRRs)
+│   ├── registry.json               # Skill registry: IDs, versions, ownership
+│   └── <skill-name>/               # Individual skills with contract.md
 ├── research/
-│   ├── raw/                    # Immutable source material
-│   ├── findings/               # Normalized, tagged, cross-referenced findings
-│   └── queries/                # Stored query definitions
+│   ├── raw/                        # Immutable source material
+│   ├── findings/                   # Normalized, tagged, cross-referenced findings
+│   └── queries/                    # Stored query definitions
 ├── scripts/
-│   ├── _ingest.py            # Ingest pipeline
-│   ├── _lint.py              # Linter
-│   ├── _scan.py              # Security scanner
-│   ├── _query.py             # Stored query engine (on-demand Q&A)
-│   ├── _eval.py              # Context evaluation engine (system health test)
-│   └── _retro.sh             # Weekly retrospective generator
-├── specs/
+│   ├── _ingest.py                  # Ingest pipeline
+│   ├── _lint.py                    # Consistency checker
+│   ├── _scan.py                    # Security scanner
+│   ├── _query.py                   # Stored query engine (on-demand Q&A)
+│   ├── _eval.py                    # Context evaluation engine (system health test)
+│   └── _retro.sh                   # Weekly retrospective generator
+└── specs/                          # System component specifications
     ├── substrate-spec.md           # This document (Constitution — the "What")
-    ├── cloudflare-spec.md                  # Cloud Architecture (Blueprint — the "How")
+    ├── cloudflare-spec.md          # Cloud Architecture (Blueprint — the "How")
     ├── ingest-spec.md              # _ingest.py behavior and pipeline
     ├── lint-spec.md                # _lint.py rules and auto-fix
     ├── query-spec.md               # _query.py format and categories
@@ -110,7 +110,15 @@ Each directory has a single responsibility. Scripts only write to their designat
 | `skills/` | PRR registry (see 2.4) | Agent skill systems, `_eval.py` | Append/edit via PRR protocol |
 | `specs/` | Humans, agents | Humans, agents | Append/edit manually |
 
-### 2.3 What Each Directory Is NOT
+### 2.3 Root Document Roles
+
+Three documents sit at the repo root. They serve different audiences:
+
+- **INDEX.md** — A short table of contents. Points readers at the right section of the Substrate. Think of it as a lobby — brief, navigational, no substance.
+- **SCHEMA.md** — A quick-reference card for frontmatter fields and naming rules. It exists so agents can check formatting without reading the full spec. **This doc is derived from Section 4 of this spec** — when the spec changes, SCHEMA.md is updated to match. If there's a conflict, the spec wins.
+- **CONTRIBUTING.md** — The workflow summary: capture, find, promote, PR. It exists so a new agent can start contributing in under 30 seconds. Like SCHEMA.md, it's derived from the governance and pipeline sections of this spec.
+
+### 2.4 What Each Directory Is NOT
 
 - **raw/** is not for agent output, session logs, or generated content. Only sources you want to ingest.
 - **findings/** is not a permanent directory -- it's a staging area. Findings exist to be promoted to insights or consumed by the query engine.
@@ -373,7 +381,7 @@ When two sources disagree:
 
 Conflicts should be documented in insights or decision records, not silently resolved.
 
-### 5.5 Deprecation
+### 5.4 Deprecation
 
 Nothing is deleted from the Substrate. Content is deprecated:
 
@@ -405,7 +413,7 @@ When building scripts or planning infrastructure, reference the Factory Architec
 
 ---
 
-## 7. The Continuous Improvement Loop
+## 8. The Continuous Improvement Loop
 
 ```
         ┌─────────────────────────────────────┐
@@ -432,7 +440,7 @@ Actions from retros are tracked as commits. The Substrate improves itself.
 
 ---
 
-## 8. Decisions Registry
+## 9. Decisions Registry
 
 | # | Decision | Date | Status | Summary |
 |---|---|---|---|---|
@@ -448,7 +456,7 @@ Actions from retros are tracked as commits. The Substrate improves itself.
 
 ---
 
-## 9. Open Questions
+## 10. Open Questions
 
 1. Should the ingest pipeline process non-markdown sources (PDFs, images with OCR)?
 2. What's the threshold for auto-promoting insights vs. requiring manual review?
