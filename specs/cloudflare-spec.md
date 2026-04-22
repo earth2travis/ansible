@@ -45,6 +45,22 @@ The Agent Factory is built on a **Cloudflare-First** architecture. This stack pr
 * **Implementation:** Agents monitor the repo for "Signals" (new issues, comments) and respond with "Actions" (commits, PRs).
 * **Benefit:** A familiar, high-trust interface for the human operator.
 
+### E. The Scheduler: Cloudflare Cron Triggers
+
+**Role:** The heartbeat of the Continuous Improvement Loop.
+
+* **Why:** The Substrate requires reliable, automated execution of `_ingest.py`, `_lint.py`, `_eval.py`, and `_retro.sh` (Section 3.7 of `substrate-spec.md`).
+* **Implementation:** Cloudflare Cron Triggers invoke specific Workers on a schedule (Daily 02:00-03:00 UTC, Sunday 04:00-05:00 UTC).
+* **Benefit:** Serverless, reliable automation that ensures the "Company Brain" is always processing new signals.
+
+### F. The Entity Resolution Service
+
+**Role:** The "Identity Unification" layer.
+
+* **Why:** To support Section 5.4 of `substrate-spec.md`, the system must resolve aliases (e.g., "Ξ2T" = "earth2travis") across all tools.
+* **Implementation:** Cloudflare Workers load `insights/entities/entity-map.json` at runtime to perform "Alias Expansion" during Ingest and Query phases.
+* **Benefit:** Comprehensive retrieval. Agents find all relevant information regardless of which alias was used in the source.
+
 ## 3. Integration with The Substrate
 
 The **Substrate** (`specs/the-substrate-spec.md`) defines the *content* and *structure* of our knowledge. The **Factory Architecture** defines the *infrastructure* that hosts and evolves that knowledge.
@@ -52,7 +68,14 @@ The **Substrate** (`specs/the-substrate-spec.md`) defines the *content* and *str
 * **The Substrate** is the "What" (The Knowledge Graph).
 * **The Factory** is the "How" (The Cloudflare Stack).
 
-## 4. Future Components
+## 4. Implementation Phases
+
+* **Phase 1:** GitHub-only (Current state). Manual commits and PRs.
+* **Phase 2:** Cloudflare Workers for Ingest/Lint. Automating the daily pipeline.
+* **Phase 3:** Cloudflare Email Service for the Agent Bus. Enabling asynchronous, robust agent-to-agent handoffs.
+* **Phase 4:** Cloudflare Artifacts for "Git for Agents" memory. Moving from standard GitHub to forkable, versioned agent states.
+
+## 5. Future Components
 
 * **Durable Objects:** For maintaining long-lived agent "Souls" or stateful sessions that exceed the lifespan of a single Worker invocation.
 * **Vectorize:** For high-dimensional semantic search across the Substrate once the file-count exceeds the limits of simple text-based retrieval.
