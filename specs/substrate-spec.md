@@ -403,8 +403,7 @@ The linter enforces all Content Standards. When it flags an issue, it can either
 - **[query-spec.md](query-spec.md)** — `_query.py`: stored Q&A interface, query format, categories, on-demand answers
 - **[eval-spec.md](eval-spec.md)** — `_eval.py`: context evaluation engine, SAS metric, system health testing
 - **[scan-spec.md](scan-spec.md)** — `_scan.py`: checks, secret patterns, integration
-
-The `_retro.sh` script is exempt from the one-spec-per-script rule. The retro is a lightweight aggregation of git log, filesystem state, and ingest output. Its behavior is fully described in Section 3.6 (Reflect) above. If the retro system grows in complexity, it gets its own spec.
+- **[retro-spec.md](retro-spec.md)** — `_retro.sh`: weekly retrospective, metrics, gap analysis
 
 ## 7. Infrastructure
 
