@@ -53,12 +53,13 @@ substrate/
 │   ├── findings/               # Normalized, tagged, cross-referenced findings
 │   └── queries/                # Stored query definitions
 ├── scripts/
-│   ├── _ingest.py              # Ingest pipeline
-│   ├── _lint.py                # Consistency checker
-│   ├── _security-scan.py       # Security and policy scanner
-│   ├── _query.py               # Knowledge comprehension tester
-│   └── _retro.sh               # Weekly retrospective generator
-└── specs/                      # System component specifications
+│   ├── _ingest.py            # Ingest pipeline
+│   ├── _lint.py              # Linter
+│   ├── _security-scan.py     # Security scanner
+│   ├── _query.py             # Stored query engine (on-demand Q&A)
+│   ├── _eval.py              # Context evaluation engine (system health test)
+│   └── _retro.sh             # Weekly retrospective generator
+├── specs/
     ├── the-substrate-spec.md   # This document
     ├── ingest-spec.md
     ├── lint-spec.md
@@ -155,15 +156,16 @@ Promoted insights are stable. They are not overwritten by subsequent ingest runs
 
 ### 3.5 Stage 4: Evaluate
 
-`_query.py` tests whether the Substrate actually works as a knowledge system. It loads questions from `research/queries/`, generates answers using only Substrate files, and scores them against human-written ground truth.
+`_eval.py` tests whether the Substrate actually works as a knowledge system. It loads eval questions from `research/queries/` (flagged `eval: true`), generates answers using only Substrate files, and scores them against human-written ground truth using the Synthesis Accuracy Score (SAS).
 
-Query categories:
+Eval categories match query categories, but eval questions have ground truth answers that queries don't:
+
 - **identity** — Who/what is something?
-- **conflict-resolution** — When sources disagree, which wins?
-- **temporal-awareness** — What changed and when?
-- **synthesis** — Cross-domain questions requiring multiple insights
+- **state** — What changed and when? Tests temporal awareness.
+- **conflict** — When sources disagree, which wins? Tests provenance handling.
+- **synthesis** — Cross-domain questions requiring multiple insights.
 
-Reports go to `evals/YYYY-MM-DD-query-results.md`. See `specs/query-spec.md`.
+Reports go to `evals/YYYY-MM-DD-eval.md`. See `specs/eval-spec.md`.
 
 ### 3.6 Stage 5: Reflect
 
@@ -185,7 +187,7 @@ Retros are append-only and immutable. They live in `retros/week-YYYY-WNN.md`.
 | Lint | Daily 02:00 UTC | `_lint.py` | stdout (exit code signals pass/fail) |
 | Ingest | Daily 02:30 UTC | `_ingest.py` | `research/findings/` + structured log |
 | Security scan | Daily 03:00 UTC | `_security-scan.py` | stdout (exit code signals pass/fail) |
-| Query evaluation | Sun 04:00 UTC | `_query.py` | `evals/YYYY-MM-DD-query-results.md` |
+| Eval | Sun 04:00 UTC | `_eval.py` | `evals/YYYY-MM-DD-eval.md` |
 | Retro generation | Sun 05:00 UTC | `_retro.sh` | `retros/week-YYYY-WNN.md` |
 
 ---
@@ -280,9 +282,10 @@ Each system script has its own spec defining inputs, outputs, behavior, and inte
 
 - **[ingest-spec.md](ingest-spec.md)** — `_ingest.py`: pipeline behavior, tagging, promotion, logging
 - **[lint-spec.md](lint-spec.md)** — `_lint.py`: rules, severity levels, auto-fix, usage
-- **[query-spec.md](query-spec.md)** — `_query.py`: query format, categories, scoring, execution
+- **[query-spec.md](query-spec.md)** — `_query.py`: stored Q&A interface, query format, categories, on-demand answers
+- **[eval-spec.md](eval-spec.md)** — `_eval.py`: context evaluation engine, SAS metric, system health testing
 - **[security-spec.md](security-spec.md)** — `_security-scan.py`: checks, secret patterns, integration
-- **[context-eval-engine.md](context-eval-engine.md)** — Context Evaluation Engine: synthesis testing framework
+- **[context-eval-engine.md](context-eval-engine.md)** — Context Evaluation Engine: legacy reference, superseded by eval-spec.md
 
 ---
 

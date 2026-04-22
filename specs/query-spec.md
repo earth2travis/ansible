@@ -2,14 +2,27 @@
 title: "Query Specification"
 date: 2026-04-22
 status: "review"
-version: "1.0"
+version: "2.0"
 ---
 
 # Query Specification (`_query.py`)
 
 ## Purpose
 
-Execute stored queries against the Substrate to test knowledge coverage, extract synthesized answers, and measure the system's comprehension.
+Queries are the stored Q&A interface to the Substrate. They allow agents and humans to ask complex questions and receive synthesized answers drawn only from Substrate files. Queries are the **primary way knowledge is consumed**.
+
+## Query vs. Eval
+
+| | Queries | Evals |
+|---|---|---|
+| **Audience** | Agents and humans using the Substrate | System maintainers testing the Substrate |
+| **Purpose** | Retrieve knowledge for current work | Verify the Substrate is working correctly |
+| **Ground truth** | No ground truth -- answers come from Substrate | Ground truth answers for comparison scoring |
+| **Output** | Answer returned to caller | Scored report saved to `evals/` |
+| **Frequency** | Ad-hoc, on-demand | Scheduled (weekly) |
+| **Scoring** | No scoring | Scored 0-100 via SAS metric |
+
+Queries are how you **use** the Substrate. Evals are how you **test** it.
 
 ## Query File Format
 
@@ -18,87 +31,64 @@ Each query lives in `research/queries/` as a `.md` file:
 ```markdown
 ---
 title: "Question description"
-category: identity|conflict-resolution|temporal-awareness|synthesis
+category: identity|state|conflict|synthesis
 created: YYYY-MM-DD
-last_run: YYYY-MM-DD
-score: null
 ---
 
 # Query: Title
 
 ## Question
-The actual question being asked.
+The question being asked. Written as a natural-language query.
 
-## Expected Answer Elements
-- Bullet list of key facts the correct answer should contain
-- Sources that should be cited
-
-## Ground Truth
-The authoritative answer (written by a human).
+## Expected Format
+Describe the structure of the expected answer:
+- What entities should be identified
+- What decisions or facts should be cited
+- What relationships should be surfaced
 ```
+
+Key differences from eval questions:
+- No `last_run` or `score` fields (queries are not scored)
+- No `Ground Truth` section (answers come from the Substrate, not pre-written)
+- `Expected Format` describes what a good answer looks like, not what the answer is
 
 ## Query Categories
 
-- **identity:** Who/what is something? Tests entity knowledge.
-- **conflict-resolution:** When sources disagree, which wins? Tests provenance handling.
-- **temporal-awareness:** What changed and when? Tests temporal reasoning.
-- **synthesis:** Cross-domain questions requiring combining multiple insights.
+- **identity** — "Who is X?", "What is the role of Y?", "What does Z mean?"
+  Retrieval of entity and concept definitions.
 
-## Execution Engine
+- **state** — "What are we working on?", "What decisions have been made?",
+  "What's our current stance on X?"
+  Retrieval of current organizational state from decisions, insights, and recent findings.
 
-`_query.py` performs:
+- **conflict** — "Which source is authoritative on X?", "What do sources disagree on?"
+  Identification of conflicting information and citation of the authoritative source.
 
-1. Load all queries from `research/queries/`
-2. Answer each question using only the files in the Substrate (no external knowledge)
-3. Cite every file used in the answer
-4. Score against the ground truth answer
-5. Report results to `evals/YYYY-MM-DD-query-results.md`
+- **synthesis** — "How do X and Y relate?", "What patterns appear across A, B, and C?"
+  Cross-domain answers requiring combining multiple insights and findings.
 
-## Scoring
+## Query Engine
 
-Each query scored 0-100:
+`_query.py` processes queries at runtime:
 
-- **Entity match (30%):** Did it identify the right entities/concepts?
-- **Source citation (20%):** Did it cite the authoritative source?
-- **Conflict resolution (25%):** If sources disagree, did it pick the right one?
-- **Synthesis depth (25%):** Did it combine multiple sources meaningfully?
-
-## Output Format
-
-```json
-{
-  "run_id": "2026-04-22T03:30:00Z",
-  "total_queries": 15,
-  "queries_passed": 12,
-  "queries_failed": 3,
-  "average_score": 78.5,
-  "results": [
-    {
-      "query_file": "research/queries/who-is-taiichi-ohno.md",
-      "category": "identity",
-      "score": 92,
-      "entities_matched": true,
-      "sources_correct": true,
-      "conflict_resolution": null,
-      "synthesis_depth": 85
-    }
-  ]
-}
-```
+1. Load the query definition from `research/queries/<query>.md`
+2. Parse the question and expected format
+3. Search the Substrate (findings + insights + decisions) for relevant files
+4. Synthesize an answer using only Substrate content
+5. Return the answer with source citations
+6. Log the query execution (not saved to disk; consumed in real-time)
 
 ## Usage
 
 ```bash
-python3 scripts/_query.py                         # Run all queries
-python3 scripts/_query.py --category synthesis    # Run only synthesis queries
-python3 scripts/_query.py --single 003-foo.md     # Run one query
-python3 scripts/_query.py --format json           # Machine-readable output
+python3 scripts/_query.py --run "query-filename.md"     # Run one query
+python3 scripts/_query.py --run-all                     # Run all queries
+python3 scripts/_query.py --category state              # Run all queries in category
+python3 scripts/_query.py --run "query.md" --format json # Machine-readable answer
 ```
 
 ## Integration
 
-Queries run:
+Queries are invoked on-demand by agents during research, decision-making, or session execution. They are not scheduled -- they run when knowledge is needed.
 
-1. Weekly as part of the retro process
-2. After major ingest runs (to verify knowledge was properly captured)
-3. On demand before important decisions requiring Substrate context
+When an agent is making a decision or writing a spec, it runs queries against the Substrate to ensure its work is grounded in existing knowledge.
