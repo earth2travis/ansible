@@ -231,7 +231,7 @@ Raw sources are placed in `research/raw/`. Sources can be:
 
 Each raw file should have frontmatter if possible. If not, the ingest pipeline infers it.
 
-Raw files are **immutable**. Once placed, they are not modified. If a source has errors, those errors are documented in a finding, not patched in the raw file. If a source is deprecated, it's moved to a `quarantine/` directory, not deleted (preserves git history).
+Raw files are **immutable**. Once placed, they are not modified. If a source has errors, those errors are documented in a finding, not patched in the raw file. If a source is deprecated, it's flagged in frontmatter to exclude it from ingest.
 
 ### 3.3 Stage 2: Process
 
@@ -373,21 +373,13 @@ When two sources disagree:
 
 Conflicts should be documented in insights or decision records, not silently resolved.
 
-### 5.4 Entity Resolution
-
-The Substrate maintains a persistent **Entity Map** to resolve aliases and unify identities across fragmented sources (e.g., "Ξ2T," "earth2travis," and "Travis" are the same entity).
-
-- **The Map:** `insights/entities/entity-map.json` serves as the ground truth for all entity aliases.
-- **Ingestion:** The `_ingest.py` pipeline uses this map to tag findings with canonical entity IDs.
-- **Querying:** The `_query.py` engine expands entity searches to include all known aliases to ensure comprehensive retrieval.
-
 ### 5.5 Deprecation
 
 Nothing is deleted from the Substrate. Content is deprecated:
 
 - Decisions are marked `superseded` with a link to the new decision.
-- Insights are marked `deprecated` with explanation and moved to an `archive/` subdirectory.
-- Raw sources that are deprecated are moved to `quarantine/` (preserves git history).
+- Insights are marked `deprecated` within the body, with explanation and link to the replacement.
+- Raw sources that are deprecated are flagged in their frontmatter and excluded from ingest.
 
 ---
 
@@ -397,11 +389,13 @@ Each system script has its own spec defining inputs, outputs, behavior, and inte
 
 - **[ingest-spec.md](ingest-spec.md)** — `_ingest.py`: pipeline behavior, tagging, promotion, logging
 - **[lint-spec.md](lint-spec.md)** — `_lint.py`: rules, severity levels, auto-fix, usage
+
+The linter enforces all Content Standards. When it flags an issue, it can either report it (default) or fix it (`--fix` mode). Non-fixable issues require manual resolution.
 - **[query-spec.md](query-spec.md)** — `_query.py`: stored Q&A interface, query format, categories, on-demand answers
 - **[eval-spec.md](eval-spec.md)** — `_eval.py`: context evaluation engine, SAS metric, system health testing
 - **[scan-spec.md](scan-spec.md)** — `_scan.py`: checks, secret patterns, integration
 
-## 6.5 Infrastructure
+## 7. Infrastructure
 
 The Factory Architecture Spec defines the cloud infrastructure that runs the Substrate:
 

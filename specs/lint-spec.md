@@ -44,7 +44,7 @@ The linter supports `--fix` for certain rules:
 
 - `naming-convention`: Rename the file on disk (requires `git mv`)
 - `fm-tags-empty`: Derive tags from strict phrase matching (same logic as ingest)
-- `html-scrape`: Move file to a `quarantine/` directory
+- `html-scrape`: Flag the file for manual review; move to `research/raw/` exclusion list
 
 Non-fixable rules (must be manual): `broken-wikilink`, `duplicate-title`, `fm-missing` (if body is empty).
 
