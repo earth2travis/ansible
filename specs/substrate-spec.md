@@ -119,6 +119,7 @@ Three agents participate in the pipeline:
 ### 3.2 Stage 1: Capture
 
 Raw sources are placed in `research/raw/`. Sources can be:
+
 - Transcripts from conversations or sessions
 - Scraped articles, blog posts, documentation
 - Research notes, meeting notes, observations
@@ -216,6 +217,7 @@ source: "URL or research/raw/filename.md"
 ```
 
 Fields:
+
 - `title` (required) — Human-readable. If not provided, inferred from first H1 or filename.
 - `tags` (required) — List of broad, stable tags. Derived by phrase matching if not provided.
 - `related` (required for insights, decisions, guides) — Minimum 2 wikilinks. Auto-generated for findings.
@@ -223,6 +225,7 @@ Fields:
 - `date` (required) — Creation date.
 
 Additional fields by type:
+
 - Decisions: `status: accepted|deprecated|superseded`, `supersedes: "..."`
 - Queries: `category: identity|conflict-resolution|temporal-awareness|synthesis`, `last_run`, `score`
 - Guides: `category: setup|workflow|troubleshooting`
