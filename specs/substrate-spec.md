@@ -60,12 +60,13 @@ substrate/
 │   ├── _eval.py              # Context evaluation engine (system health test)
 │   └── _retro.sh             # Weekly retrospective generator
 ├── specs/
-    ├── substrate-spec.md       # This document
-    ├── ingest-spec.md
-    ├── lint-spec.md
-    ├── query-spec.md
-    ├── eval-spec.md
-    └── scan-spec.md
+    ├── substrate-spec.md           # This document (Constitution — the "What")
+    ├── factory-architecture-cloudflare.md  # Factory Architecture (Blueprint — the "How")
+    ├── ingest-spec.md              # _ingest.py behavior and pipeline
+    ├── lint-spec.md                # _lint.py rules and auto-fix
+    ├── query-spec.md               # _query.py format and categories
+    ├── eval-spec.md                # _eval.py scoring and execution
+    └── scan-spec.md                # _scan.py security checks
 ```
 
 ### 2.2 Directory Contract
@@ -289,6 +290,14 @@ Each system script has its own spec defining inputs, outputs, behavior, and inte
 - **[query-spec.md](query-spec.md)** — `_query.py`: stored Q&A interface, query format, categories, on-demand answers
 - **[eval-spec.md](eval-spec.md)** — `_eval.py`: context evaluation engine, SAS metric, system health testing
 - **[scan-spec.md](scan-spec.md)** — `_scan.py`: checks, secret patterns, integration
+
+## 6.5 Infrastructure
+
+The Factory Architecture Spec defines the cloud infrastructure that runs the Substrate:
+
+- **[factory-architecture-cloudflare.md](factory-architecture-cloudflare.md)** — Cloudflare-first stack: Artifacts (memory), Workers + AI Gateway (engine), Email (transport), GitHub (interface)
+
+When building scripts or planning infrastructure, reference the Factory Architecture spec. When organizing knowledge or defining content standards, reference the Substrate spec.
 
 ---
 
